@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HabitFlow - Lihat seluruh riwayat aktivitas habit kamu secara lengkap." />
+
+    <title>HabitFlow - Riwayat</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">HabitFlow</div>
+
+        <nav class="desktop-menu">
+            <a href="index.html">Dashboard</a>
+            <a href="habit.html">Habit</a>
+            <a href="riwayat.html" class="active">Riwayat</a>
+            <a href="statistik.html">Statistik</a>
+        </nav>
+
+        <a href="profile.html" class="profile-btn" aria-label="Profile">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container" id="riwayatPage">
+
+        <!-- PAGE HEADER -->
+        <section class="habit-page-hero" style="grid-template-columns: 1fr 200px;">
+            <div>
+                <span class="page-badge">Riwayat Aktivitas</span>
+                <h1>Semua Riwayat Habitmu</h1>
+                <p>Lihat rekam jejak aktivitas habit kamu dari hari ke hari. Filter berdasarkan kategori atau status.</p>
+            </div>
+
+            <div class="hero-mini-card">
+                <span class="material-symbols-outlined">history</span>
+                <h3 id="riwayatTotal">0</h3>
+                <p>Total Riwayat</p>
+            </div>
+        </section>
+
+        <!-- FILTERS -->
+        <section class="card" style="margin-bottom: 28px;">
+            <div class="section-header" style="flex-wrap: wrap; gap: 14px;">
+                <h2 style="margin-bottom: 0;">Filter Riwayat</h2>
+
+                <div style="display:flex;gap:12px;flex-wrap:wrap;" class="riwayat-filters">
+                    <select id="riwayatFilterCategory" class="filter-select">
+                        <option value="Semua">Semua Kategori</option>
+                        <option value="Belajar">Belajar</option>
+                        <option value="Kesehatan">Kesehatan</option>
+                        <option value="Ibadah">Ibadah</option>
+                        <option value="Produktivitas">Produktivitas</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+
+                    <select id="riwayatFilterStatus" class="filter-select">
+                        <option value="Semua">Semua Status</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Gagal">Gagal</option>
+                    </select>
+
+                    <div class="search-wrapper" style="flex:1;min-width:200px;margin-bottom:0;">
+                        <span class="material-symbols-outlined">search</span>
+                        <input type="text" id="riwayatSearch" placeholder="Cari nama habit..." />
+                    </div>
+
+                    <button id="clearHistoryBtn" style="
+                        padding: 12px 18px;
+                        border-radius: 999px;
+                        background: rgba(255,180,171,0.12);
+                        color: var(--danger);
+                        border: 1px solid rgba(255,180,171,0.2);
+                        font-size: 13px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: 0.25s ease;
+                        white-space: nowrap;
+                    ">
+                        <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">delete_sweep</span>
+                        Hapus Semua
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABLE -->
+        <section class="card history-card">
+            <div class="table-wrapper">
+                <table class="riwayat-page-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama Habit</th>
+                            <th>Kategori</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayatTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <nav class="mobile-menu">
+        <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <small>Dashboard</small>
+        </a>
+        <a href="habit.html">
+            <span class="material-symbols-outlined">check_circle</span>
+            <small>Habit</small>
+        </a>
+        <a href="riwayat.html" class="active">
+            <span class="material-symbols-outlined">history</span>
+            <small>Riwayat</small>
+        </a>
+        <a href="statistik.html">
+            <span class="material-symbols-outlined">query_stats</span>
+            <small>Statistik</small>
+        </a>
+    </nav>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div>
+            <h3>HabitFlow</h3>
+            <p>© 2026 HabitFlow. Student-focused productivity.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Help Center</a>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/riwayat.js"></script>
+
+</body>
+
+</html>

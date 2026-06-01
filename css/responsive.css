@@ -1,0 +1,101 @@
+/* =========================================================
+   HABITFLOW - RESPONSIVE.CSS
+   Responsive overrides untuk semua halaman tambahan:
+   riwayat.html, statistik.html, profile.html
+========================================================= */
+
+/* =========================
+   RIWAYAT PAGE - RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+    .riwayat-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .riwayat-filters .filter-select,
+    .riwayat-filters input {
+        max-width: 100%;
+    }
+
+    .riwayat-page-table th:nth-child(3),
+    .riwayat-page-table td:nth-child(3) {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .riwayat-page-table th:nth-child(1),
+    .riwayat-page-table td:nth-child(1) {
+        font-size: 12px;
+    }
+}
+
+/* =========================
+   STATISTIK PAGE - RESPONSIVE
+========================= */
+
+@media (max-width: 992px) {
+    .statistik-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .statistik-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .statistik-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .category-bars {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .statistik-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .heatmap-grid {
+        gap: 3px;
+    }
+
+    .heatmap-cell {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* =========================
+   PROFILE PAGE - RESPONSIVE
+========================= */
+
+@media (max-width: 992px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-sidebar {
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-avatar-wrapper {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-name {
+        font-size: 22px;
+    }
+
+    .profile-stats-row {
+        grid-template-columns: 1fr;
+    }
+}

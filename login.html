@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HabitFlow - Masuk ke akun kamu dan mulai kelola habit harian dengan mudah." />
+
+    <title>HabitFlow - Login</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="auth-page">
+        <div class="auth-card">
+
+            <!-- Logo -->
+            <div class="auth-logo">
+                <span class="material-symbols-outlined auth-logo-icon">self_improvement</span>
+                <span class="auth-logo-text">HabitFlow</span>
+            </div>
+
+            <h1 class="auth-title">Selamat Datang!</h1>
+            <p class="auth-subtitle">Masuk ke akunmu dan lanjutkan perjalanan habitmu.</p>
+
+            <!-- Error Message -->
+            <div id="loginError" class="auth-error"></div>
+
+            <!-- Form -->
+            <form id="loginForm" class="auth-form">
+
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">mail</span>
+                        <input type="email" id="loginEmail" placeholder="kamu@email.com" required autocomplete="email" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">lock</span>
+                        <input type="password" id="loginPassword" placeholder="Masukkan password" required autocomplete="current-password" />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('loginPassword', this)">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="loginSubmitBtn" class="auth-btn">Masuk</button>
+
+            </form>
+
+            <p class="auth-footer-text">
+                Belum punya akun? <a href="register.html">Daftar sekarang</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>

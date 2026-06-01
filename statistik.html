@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HabitFlow - Lihat statistik dan analisis lengkap progress habitmu." />
+
+    <title>HabitFlow - Statistik</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Statistik Page Specific Styles */
+        .statistik-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .statistik-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .category-bar-row {
+            margin-bottom: 14px;
+        }
+
+        .category-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .category-bar-label span {
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .category-bar-track {
+            height: 8px;
+            border-radius: 999px;
+            background: var(--surface-highest);
+            overflow: hidden;
+        }
+
+        .category-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: var(--primary);
+            transition: width 0.8s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">HabitFlow</div>
+
+        <nav class="desktop-menu">
+            <a href="index.html">Dashboard</a>
+            <a href="habit.html">Habit</a>
+            <a href="riwayat.html">Riwayat</a>
+            <a href="statistik.html" class="active">Statistik</a>
+        </nav>
+
+        <a href="profile.html" class="profile-btn" aria-label="Profile">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container" id="statistikPage">
+
+        <!-- PAGE HEADER -->
+        <section class="habit-page-hero">
+            <div>
+                <span class="page-badge">Analisis & Progres</span>
+                <h1>Statistik Habitmu</h1>
+                <p>Pantau progres, streak, dan konsistensimu melalui data yang akurat dan informatif.</p>
+            </div>
+
+            <div class="hero-mini-card">
+                <span class="material-symbols-outlined">local_fire_department</span>
+                <h3 id="statStreak">0</h3>
+                <p>Hari Beruntun</p>
+            </div>
+        </section>
+
+        <!-- SUMMARY CARDS -->
+        <section class="statistik-summary">
+            <div class="summary-card">
+                <p>Total Habit</p>
+                <div>
+                    <h2 id="statTotal">0</h2>
+                    <span class="material-symbols-outlined">list_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Selesai Hari Ini</p>
+                <div>
+                    <h2 id="statCompleted">0</h2>
+                    <span class="material-symbols-outlined">task_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Streak Hari Ini</p>
+                <div>
+                    <h2 id="statStreak2">0</h2>
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Tingkat Selesai</p>
+                <div>
+                    <h2 id="statRate">0%</h2>
+                    <span class="material-symbols-outlined">percent</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN LAYOUT -->
+        <section class="statistik-layout">
+
+            <!-- LEFT: PROGRESS CIRCLE + KATEGORI -->
+            <div style="display:flex;flex-direction:column;gap:24px;">
+
+                <!-- PROGRESS CIRCLE -->
+                <section class="card statistic-card">
+                    <h2>Progress Hari Ini</h2>
+
+                    <div class="progress-circle">
+                        <svg width="170" height="170">
+                            <circle class="circle-bg" cx="85" cy="85" r="70"></circle>
+                            <circle id="statProgressCircle" class="circle-progress" cx="85" cy="85" r="70"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <h3 id="statProgressPercent">0%</h3>
+                            <p>Goal Hari Ini</p>
+                        </div>
+                    </div>
+
+                    <p class="stat-desc">Selesaikan lebih banyak habit untuk meningkatkan persentase harimu.</p>
+                </section>
+
+                <!-- KATEGORI BREAKDOWN -->
+                <section class="card">
+                    <h2>Per Kategori</h2>
+                    <div id="categoryBreakdown"></div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT: WEEKLY CHART + TIPS -->
+            <div style="display:flex;flex-direction:column;gap:24px;">
+
+                <!-- 7 HARI CHART -->
+                <section class="card">
+                    <h2>Aktivitas 7 Hari Terakhir</h2>
+                    <div class="chart-box">
+                        <div class="bar-chart" id="weeklyChart"></div>
+                    </div>
+
+                    <div class="tips-box" style="margin-top:20px;">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        <div>
+                            <h4>Tips Konsistensi</h4>
+                            <p>Streak dibangun satu hari dalam satu waktu. Mulai dengan habit kecil yang bisa kamu lakukan setiap hari tanpa gagal.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <nav class="mobile-menu">
+        <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <small>Dashboard</small>
+        </a>
+        <a href="habit.html">
+            <span class="material-symbols-outlined">check_circle</span>
+            <small>Habit</small>
+        </a>
+        <a href="riwayat.html">
+            <span class="material-symbols-outlined">history</span>
+            <small>Riwayat</small>
+        </a>
+        <a href="statistik.html" class="active">
+            <span class="material-symbols-outlined">query_stats</span>
+            <small>Statistik</small>
+        </a>
+    </nav>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div>
+            <h3>HabitFlow</h3>
+            <p>© 2026 HabitFlow. Student-focused productivity.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Help Center</a>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/statistik.js"></script>
+
+</body>
+
+</html>

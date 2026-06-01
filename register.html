@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HabitFlow - Buat akun baru dan mulai membangun kebiasaan positif hari ini." />
+
+    <title>HabitFlow - Daftar</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="auth-page">
+        <div class="auth-card">
+
+            <!-- Logo -->
+            <div class="auth-logo">
+                <span class="material-symbols-outlined auth-logo-icon">self_improvement</span>
+                <span class="auth-logo-text">HabitFlow</span>
+            </div>
+
+            <h1 class="auth-title">Buat Akun Baru</h1>
+            <p class="auth-subtitle">Bergabung dan mulai bangun kebiasaan positifmu.</p>
+
+            <!-- Messages -->
+            <div id="registerError" class="auth-error"></div>
+            <div id="registerSuccess" class="auth-success"></div>
+
+            <!-- Form -->
+            <form id="registerForm" class="auth-form">
+
+                <div class="form-group">
+                    <label for="regName">Nama Lengkap</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">person</span>
+                        <input type="text" id="regName" placeholder="Nama kamu" required autocomplete="name" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">mail</span>
+                        <input type="email" id="regEmail" placeholder="kamu@email.com" required autocomplete="email" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">lock</span>
+                        <input type="password" id="regPassword" placeholder="Minimal 6 karakter" required autocomplete="new-password" />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regPassword', this)">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regConfirmPassword">Konfirmasi Password</label>
+                    <div class="auth-input-wrapper">
+                        <span class="material-symbols-outlined input-icon">lock_reset</span>
+                        <input type="password" id="regConfirmPassword" placeholder="Ulangi password" required autocomplete="new-password" />
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regConfirmPassword', this)">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="registerSubmitBtn" class="auth-btn">Buat Akun</button>
+
+            </form>
+
+            <p class="auth-footer-text">
+                Sudah punya akun? <a href="login.html">Masuk di sini</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>

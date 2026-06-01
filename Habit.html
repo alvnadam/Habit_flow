@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HabitFlow - Habit</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">HabitFlow</div>
+
+        <nav class="desktop-menu">
+            <a href="index.html">Dashboard</a>
+            <a href="habit.html" class="active">Habit</a>
+            <a href="index.html#riwayat">Riwayat</a>
+            <a href="index.html#statistik">Statistik</a>
+        </nav>
+
+        <button class="profile-btn">
+            <span class="material-symbols-outlined">account_circle</span>
+        </button>
+    </header>
+
+    <main class="container">
+
+        <section class="habit-page-hero">
+            <div>
+                <span class="page-badge">Habit Manager</span>
+                <h1>Kelola semua habit kamu di satu tempat.</h1>
+                <p>
+                    Tambahkan habit baru, atur target harian, ubah kategori, tandai selesai, dan pantau progres
+                    kebiasaanmu setiap hari.
+                </p>
+            </div>
+
+            <div class="hero-mini-card">
+                <span class="material-symbols-outlined">trending_up</span>
+                <h3 id="heroProgress">0%</h3>
+                <p>Progress hari ini</p>
+            </div>
+        </section>
+
+        <section class="habit-page-summary">
+            <div class="summary-card">
+                <p>Total Habit</p>
+                <div>
+                    <h2 id="habitTotal">0</h2>
+                    <span class="material-symbols-outlined">list_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Selesai</p>
+                <div>
+                    <h2 id="habitDone">0</h2>
+                    <span class="material-symbols-outlined">task_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Belum Selesai</p>
+                <div>
+                    <h2 id="habitPending" class="danger-text">0</h2>
+                    <span class="material-symbols-outlined danger-text">pending</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="habit-manager-layout">
+
+            <section class="card habit-create-card">
+                <h2 id="formTitle">Tambah Habit</h2>
+
+                <form id="habitPageForm" class="habit-form-full">
+                    <input type="hidden" id="habitEditId">
+
+                    <div class="form-group">
+                        <label>Nama Habit</label>
+                        <input type="text" id="habitPageName" placeholder="Contoh: Membaca buku" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="habitPageCategory" required>
+                            <option value="Belajar">Belajar</option>
+                            <option value="Kesehatan">Kesehatan</option>
+                            <option value="Ibadah">Ibadah</option>
+                            <option value="Produktivitas">Produktivitas</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Harian</label>
+                        <input type="text" id="habitPageTarget" placeholder="Contoh: 30 menit / 1 kali / 10 halaman"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Prioritas</label>
+                        <select id="habitPriority" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Penting">Penting</option>
+                            <option value="Santai">Santai</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="habitPageSubmit">
+                        <span class="material-symbols-outlined">add_circle</span>
+                        Simpan Habit
+                    </button>
+
+                    <button type="button" id="cancelEditBtn" class="cancel-btn">
+                        Batal Edit
+                    </button>
+                </form>
+            </section>
+
+            <section class="card habit-control-card">
+                <div class="section-header">
+                    <h2>Daftar Habit</h2>
+
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="Semua">Semua</option>
+                        <option value="Belajar">Belajar</option>
+                        <option value="Kesehatan">Kesehatan</option>
+                        <option value="Ibadah">Ibadah</option>
+                        <option value="Produktivitas">Produktivitas</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="search-wrapper">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" id="searchHabit" placeholder="Cari habit...">
+                </div>
+
+                <div id="habitPageList" class="habit-page-list"></div>
+
+                <div id="habitPageEmpty" class="empty-state">
+                    <span class="material-symbols-outlined">self_improvement</span>
+                    <p>Belum ada habit.<br>Tambahkan habit pertamamu sekarang.</p>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+    <nav class="mobile-menu">
+        <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <small>Dashboard</small>
+        </a>
+
+        <a href="habit.html" class="active">
+            <span class="material-symbols-outlined">check_circle</span>
+            <small>Habit</small>
+        </a>
+
+        <a href="index.html#riwayat">
+            <span class="material-symbols-outlined">history</span>
+            <small>Riwayat</small>
+        </a>
+
+        <a href="index.html#statistik">
+            <span class="material-symbols-outlined">query_stats</span>
+            <small>Statistik</small>
+        </a>
+    </nav>
+
+    <footer class="footer">
+        <div>
+            <h3>HabitFlow</h3>
+            <p>© 2026 HabitFlow. Student-focused productivity.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Help Center</a>
+            <a href="#">Google Sheets Sync</a>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/habit.js"></script>
+</body>
+
+</html>

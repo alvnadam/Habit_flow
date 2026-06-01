@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="HabitFlow - Kelola profil, preferensi, dan data akun kamu." />
+
+    <title>HabitFlow - Profil</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Profile Page Specific */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile-card {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .profile-avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: var(--primary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-avatar-wrapper span {
+            font-size: 52px;
+            color: var(--primary);
+        }
+
+        .profile-name {
+            font-family: "Manrope", sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .profile-stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .profile-stat-item {
+            padding: 14px;
+            background: var(--surface-low);
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .profile-stat-item h4 {
+            font-family: "Manrope", sans-serif;
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .profile-stat-item p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .danger-zone {
+            border: 1px solid rgba(255, 180, 171, 0.2);
+            background: rgba(255, 180, 171, 0.05);
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 999px;
+            background: transparent;
+            border: 1px solid var(--outline);
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .clear-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 999px;
+            background: rgba(255, 180, 171, 0.12);
+            border: 1px solid rgba(255, 180, 171, 0.2);
+            color: var(--danger);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .clear-btn:hover {
+            background: rgba(255, 180, 171, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">HabitFlow</div>
+
+        <nav class="desktop-menu">
+            <a href="index.html">Dashboard</a>
+            <a href="habit.html">Habit</a>
+            <a href="riwayat.html">Riwayat</a>
+            <a href="statistik.html">Statistik</a>
+        </nav>
+
+        <a href="profile.html" class="profile-btn active" aria-label="Profile">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container" id="profilePage">
+
+        <!-- PAGE HEADER -->
+        <div style="margin-bottom: 28px;">
+            <span class="page-badge">Akun Saya</span>
+            <h1 style="font-family:'Manrope',sans-serif;font-size:32px;margin-top:10px;">Profil</h1>
+        </div>
+
+        <!-- LAYOUT -->
+        <section class="profile-layout">
+
+            <!-- SIDEBAR -->
+            <aside class="profile-sidebar">
+
+                <!-- Profile Card -->
+                <div class="card profile-card">
+                    <div class="profile-avatar-wrapper">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <h2 class="profile-name" id="profileNameDisplay">-</h2>
+                    <p class="profile-email" id="profileEmailDisplay">-</p>
+
+                    <!-- Stats -->
+                    <div class="profile-stats-row">
+                        <div class="profile-stat-item">
+                            <h4 id="profileStatHabits">0</h4>
+                            <p>Total Habit</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 id="profileStatCompleted">0</h4>
+                            <p>Selesai</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 id="profileStatStreak">0</h4>
+                            <p>Streak</p>
+                        </div>
+                        <div class="profile-stat-item">
+                            <h4 id="profileStatDays">0</h4>
+                            <p>Hari Aktif</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logout -->
+                <div class="card">
+                    <h2 style="font-size:18px;margin-bottom:16px;">Sesi</h2>
+                    <button id="logoutBtn" class="logout-btn">
+                        <span class="material-symbols-outlined">logout</span>
+                        Keluar dari Akun
+                    </button>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="card danger-zone">
+                    <h2 style="font-size:18px;margin-bottom:8px;color:var(--danger);">Zona Bahaya</h2>
+                    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                        Hapus semua data habit dan riwayat. Tindakan ini tidak bisa dibatalkan.
+                    </p>
+                    <button id="clearDataBtn" class="clear-btn">
+                        <span class="material-symbols-outlined">delete_forever</span>
+                        Hapus Semua Data
+                    </button>
+                </div>
+
+            </aside>
+
+            <!-- MAIN: EDIT PROFILE -->
+            <div style="display:flex;flex-direction:column;gap:24px;">
+
+                <section class="card">
+                    <h2>Edit Profil</h2>
+
+                    <form id="profileForm" class="habit-form-full">
+
+                        <div class="form-group">
+                            <label for="profileNameInput">Nama Lengkap</label>
+                            <input type="text" id="profileNameInput" placeholder="Nama kamu" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profileEmailInput">Email</label>
+                            <input type="email" id="profileEmailInput" placeholder="kamu@email.com" required />
+                        </div>
+
+                        <div class="form-group button-wrapper" style="justify-content:flex-start;">
+                            <button type="submit" id="saveProfileBtn" style="
+                                padding: 14px 28px;
+                                border-radius: 999px;
+                                background: var(--primary);
+                                color: #003824;
+                                font-size: 14px;
+                                font-weight: 800;
+                                cursor: pointer;
+                                transition: 0.25s ease;
+                                border: none;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                            ">
+                                <span class="material-symbols-outlined">save</span>
+                                Simpan Perubahan
+                            </button>
+                        </div>
+
+                    </form>
+                </section>
+
+                <!-- App Info -->
+                <section class="card">
+                    <h2 style="font-size:18px;margin-bottom:16px;">Tentang Aplikasi</h2>
+                    <div style="display:flex;flex-direction:column;gap:10px;color:var(--text-muted);font-size:14px;">
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Versi Aplikasi</span>
+                            <strong style="color:var(--text);">1.0.0</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Platform</span>
+                            <strong style="color:var(--text);">Web (LocalStorage)</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Backend</span>
+                            <strong style="color:var(--text);">Supabase (Opsional)</strong>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <nav class="mobile-menu">
+        <a href="index.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            <small>Dashboard</small>
+        </a>
+        <a href="habit.html">
+            <span class="material-symbols-outlined">check_circle</span>
+            <small>Habit</small>
+        </a>
+        <a href="riwayat.html">
+            <span class="material-symbols-outlined">history</span>
+            <small>Riwayat</small>
+        </a>
+        <a href="statistik.html">
+            <span class="material-symbols-outlined">query_stats</span>
+            <small>Statistik</small>
+        </a>
+    </nav>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div>
+            <h3>HabitFlow</h3>
+            <p>© 2026 HabitFlow. Student-focused productivity.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Help Center</a>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+
+</body>
+
+</html>

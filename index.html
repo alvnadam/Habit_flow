@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HabitFlow - Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">HabitFlow</div>
+
+        <nav class="desktop-menu">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="habit.html">Habit</a>
+            <a href="riwayat.html">Riwayat</a>
+            <a href="statistik.html">Statistik</a>
+        </nav>
+
+        <a href="profile.html" class="profile-btn" aria-label="Profile">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container">
+
+        <!-- ================= SUMMARY ================= -->
+        <section id="dashboard" class="summary-grid">
+
+            <div class="summary-card">
+                <p>Total Habit</p>
+                <div>
+                    <h2 id="totalHabit">0</h2>
+                    <span class="material-symbols-outlined">list_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Selesai Hari Ini</p>
+                <div>
+                    <h2 id="completedToday">0</h2>
+                    <span class="material-symbols-outlined">task_alt</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Belum Selesai</p>
+                <div>
+                    <h2 id="pendingToday" class="danger-text">0</h2>
+                    <span class="material-symbols-outlined danger-text">pending</span>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <p>Streak</p>
+                <div>
+                    <h2 id="streakCount">0</h2>
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= DASHBOARD LAYOUT ================= -->
+        <section class="main-layout">
+
+            <!-- ================= LEFT COLUMN ================= -->
+            <div class="left-column">
+
+                <!-- FORM TAMBAH HABIT -->
+                <section id="habit" class="card">
+                    <h2>Tambah Habit Baru</h2>
+
+                    <form id="habitForm" class="habit-form">
+                        <input type="hidden" id="editId" />
+
+                        <div class="form-group">
+                            <label for="habitName">Nama Habit</label>
+                            <input type="text" id="habitName" placeholder="Misal: Baca Buku 10 Halaman" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="habitCategory">Kategori</label>
+                            <select id="habitCategory" required>
+                                <option value="Belajar">Belajar</option>
+                                <option value="Kesehatan">Kesehatan</option>
+                                <option value="Ibadah">Ibadah</option>
+                                <option value="Produktivitas">Produktivitas</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="habitTarget">Target Harian</label>
+                            <input type="text" id="habitTarget" placeholder="Misal: 1 kali" required />
+                        </div>
+
+                        <div class="form-group button-wrapper">
+                            <button type="submit" id="submitBtn">Simpan Habit</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- HABIT HARI INI -->
+                <section class="habit-section">
+                    <div class="section-header">
+                        <h2>Habit Hari Ini</h2>
+                        <span id="todayDate"></span>
+                    </div>
+
+                    <div id="habitList" class="habit-list"></div>
+
+                    <div id="emptyState" class="empty-state">
+                        <span class="material-symbols-outlined">post_add</span>
+                        <p>
+                            Belum ada habit.<br />
+                            Tambahkan habit pertamamu sekarang.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- RIWAYAT HABIT -->
+                <section id="riwayat" class="card history-card">
+                    <div class="section-header">
+                        <h2>Riwayat Habit</h2>
+
+                        <select id="filterCategory" class="filter-select">
+                            <option value="Semua">Semua Kategori</option>
+                            <option value="Belajar">Belajar</option>
+                            <option value="Kesehatan">Kesehatan</option>
+                            <option value="Ibadah">Ibadah</option>
+                            <option value="Produktivitas">Produktivitas</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Nama Habit</th>
+                                    <th>Kategori</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="historyTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ================= RIGHT COLUMN ================= -->
+            <aside id="statistik" class="right-column">
+
+                <!-- STATISTIK -->
+                <section class="card statistic-card">
+                    <h2>Statistik</h2>
+
+                    <div class="progress-circle">
+                        <svg width="170" height="170">
+                            <circle class="circle-bg" cx="85" cy="85" r="70"></circle>
+                            <circle id="progressCircle" class="circle-progress" cx="85" cy="85" r="70"></circle>
+                        </svg>
+
+                        <div class="progress-text">
+                            <h3 id="progressPercent">0%</h3>
+                            <p>Goal Hari Ini</p>
+                        </div>
+                    </div>
+
+                    <p class="stat-desc">
+                        Konsistensi kamu hari ini akan terlihat setelah habit mulai diselesaikan.
+                    </p>
+
+                    <div class="chart-box">
+                        <p>Aktivitas 7 Hari Terakhir</p>
+
+                        <div class="bar-chart">
+                            <div class="bar-item">
+                                <div class="bar" style="height: 40%;"></div>
+                                <span>Sen</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar" style="height: 70%;"></div>
+                                <span>Sel</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar" style="height: 50%;"></div>
+                                <span>Rab</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar" style="height: 85%;"></div>
+                                <span>Kam</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar" style="height: 55%;"></div>
+                                <span>Jum</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar" style="height: 75%;"></div>
+                                <span>Sab</span>
+                            </div>
+
+                            <div class="bar-item">
+                                <div class="bar today-bar" style="height: 30%;"></div>
+                                <span>Min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tips-box">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+
+                        <div>
+                            <h4>Tips Hari Ini</h4>
+                            <p>
+                                Habit kecil yang dilakukan konsisten lebih baik daripada habit besar yang jarang.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- IMAGE CARD -->
+                <section class="image-card">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200&auto=format&fit=crop"
+                        alt="Workspace" />
+
+                    <div class="image-overlay"></div>
+
+                    <div class="image-text">
+                        <h3>Mulai harimu dengan fokus.</h3>
+                        <p>Selesaikan habit teratas untuk membangun rutinitas positif.</p>
+                    </div>
+                </section>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+    <!-- ================= MOBILE MENU ================= -->
+    <nav class="mobile-menu">
+
+        <a href="index.html" class="active">
+            <span class="material-symbols-outlined">dashboard</span>
+            <small>Dashboard</small>
+        </a>
+
+        <a href="habit.html">
+            <span class="material-symbols-outlined">check_circle</span>
+            <small>Habit</small>
+        </a>
+
+        <a href="riwayat.html">
+            <span class="material-symbols-outlined">history</span>
+            <small>Riwayat</small>
+        </a>
+
+        <a href="statistik.html">
+            <span class="material-symbols-outlined">query_stats</span>
+            <small>Statistik</small>
+        </a>
+
+    </nav>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+        <div>
+            <h3>HabitFlow</h3>
+            <p>© 2026 HabitFlow. Student-focused productivity.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Help Center</a>
+            <a href="#">Google Sheets Sync</a>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/config.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
