@@ -3,50 +3,68 @@
    Logika untuk halaman index.html / Dashboard
 ========================================================= */
 
-// Proteksi: Redirect jika belum login
-window.addEventListener('DOMContentLoaded', async function() {
-    const isLoggedIn = await redirectIfNotLoggedIn();
-    if (!isLoggedIn) return;
-});
-
-let habits = getHabits();
-let history = getHistory();
-
-const today = new Date();
-const todayKey = getLocalDateKey(today);
-const formattedToday = getFormattedDate(today);
+let habits = [];
+let history = [];
+let isInitialized = false;
 
 /* =========================
    DASHBOARD ELEMENTS
 ========================= */
 
 const dashboardElements = {
-    habitForm: document.getElementById("habitForm"),
-    habitName: document.getElementById("habitName"),
-    habitCategory: document.getElementById("habitCategory"),
-    habitTarget: document.getElementById("habitTarget"),
-    editId: document.getElementById("editId"),
-    submitBtn: document.getElementById("submitBtn"),
-
-    habitList: document.getElementById("habitList"),
-    emptyState: document.getElementById("emptyState"),
-    historyTable: document.getElementById("historyTable"),
-    filterCategory: document.getElementById("filterCategory"),
-
-    totalHabit: document.getElementById("totalHabit"),
-    completedToday: document.getElementById("completedToday"),
-    pendingToday: document.getElementById("pendingToday"),
-    streakCount: document.getElementById("streakCount"),
-    progressPercent: document.getElementById("progressPercent"),
-    progressCircle: document.getElementById("progressCircle"),
-    todayDate: document.getElementById("todayDate")
+    habitForm: null,
+    habitName: null,
+    habitCategory: null,
+    habitTarget: null,
+    editId: null,
+    submitBtn: null,
+    habitList: null,
+    emptyState: null,
+    historyTable: null,
+    filterCategory: null,
+    totalHabit: null,
+    completedToday: null,
+    pendingToday: null,
+    streakCount: null,
+    progressPercent: null,
+    progressCircle: null,
+    todayDate: null
 };
+
+/* =========================
+   CACHE ELEMENTS
+========================= */
+
+function cacheElements() {
+    dashboardElements.habitForm = document.getElementById("habitForm");
+    dashboardElements.habitName = document.getElementById("habitName");
+    dashboardElements.habitCategory = document.getElementById("habitCategory");
+    dashboardElements.habitTarget = document.getElementById("habitTarget");
+    dashboardElements.editId = document.getElementById("editId");
+    dashboardElements.submitBtn = document.getElementById("submitBtn");
+    dashboardElements.habitList = document.getElementById("habitList");
+    dashboardElements.emptyState = document.getElementById("emptyState");
+    dashboardElements.historyTable = document.getElementById("historyTable");
+    dashboardElements.filterCategory = document.getElementById("filterCategory");
+    dashboardElements.totalHabit = document.getElementById("totalHabit");
+    dashboardElements.completedToday = document.getElementById("completedToday");
+    dashboardElements.pendingToday = document.getElementById("pendingToday");
+    dashboardElements.streakCount = document.getElementById("streakCount");
+    dashboardElements.progressPercent = document.getElementById("progressPercent");
+    dashboardElements.progressCircle = document.getElementById("progressCircle");
+    dashboardElements.todayDate = document.getElementById("todayDate");
+}
 
 /* =========================
    INIT DASHBOARD
 ========================= */
 
 function initDashboardPage() {
+    // Define date variables
+    const today = new Date();
+    const todayKey = getLocalDateKey(today);
+    const formattedToday = getFormattedDate(today);
+
     const {
         habitForm, habitName, habitCategory, habitTarget,
         editId, submitBtn, filterCategory, todayDate
@@ -273,6 +291,21 @@ function editDashboardHabit(id) {
    INIT
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    // Check login dulu
+    const isLoggedIn = await redirectIfNotLoggedIn();
+    if (!isLoggedIn) return; // Jika tidak login, redirect akan handle
+
+    if (isInitialized) return; // Prevent double init
+    isInitialized = true;
+
+    // Load data setelah login confirmed
+    habits = getHabits();
+    history = getHistory();
+
+    // Cache elements
+    cacheElements();
+
+    // Init
     initDashboardPage();
 });

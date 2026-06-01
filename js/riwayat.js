@@ -3,20 +3,24 @@
    Logika untuk halaman riwayat.html
 ========================================================= */
 
+let isInitialized = false;
+
 // Proteksi: Redirect jika belum login
-window.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const isLoggedIn = await redirectIfNotLoggedIn();
     if (!isLoggedIn) return;
+
+    if (isInitialized) return;
+    isInitialized = true;
+
+    initRiwayatPage();
 });
 
 /* =========================
-   INIT RIWAYAT PAGE
+   INIT RIWAYAT
 ========================= */
 
 function initRiwayatPage() {
-    const riwayatContainer = document.getElementById("riwayatTable");
-    if (!riwayatContainer) return;
-
     const filterCategory = document.getElementById("riwayatFilterCategory");
     const filterStatus = document.getElementById("riwayatFilterStatus");
     const searchInput = document.getElementById("riwayatSearch");
@@ -105,6 +109,4 @@ function renderRiwayat() {
    INIT
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
-    initRiwayatPage();
-});
+

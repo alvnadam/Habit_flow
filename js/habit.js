@@ -3,43 +3,49 @@
    Logika untuk halaman habit.html / Habit Manager
 ========================================================= */
 
-// Proteksi: Redirect jika belum login
-window.addEventListener('DOMContentLoaded', async function() {
-    const isLoggedIn = await redirectIfNotLoggedIn();
-    if (!isLoggedIn) return;
-});
-
-let habits = getHabits();
-let history = getHistory();
-
-const today = new Date();
-const todayKey = getLocalDateKey(today);
-
-/* =========================
-   HABIT PAGE ELEMENTS
-========================= */
+let habits = [];
+let history = [];
+let isInitialized = false;
 
 const habitPageElements = {
-    habitPageForm: document.getElementById("habitPageForm"),
-    habitEditId: document.getElementById("habitEditId"),
-    habitPageName: document.getElementById("habitPageName"),
-    habitPageCategory: document.getElementById("habitPageCategory"),
-    habitPageTarget: document.getElementById("habitPageTarget"),
-    habitPriority: document.getElementById("habitPriority"),
-    habitPageSubmit: document.getElementById("habitPageSubmit"),
-    cancelEditBtn: document.getElementById("cancelEditBtn"),
-    formTitle: document.getElementById("formTitle"),
-
-    habitPageList: document.getElementById("habitPageList"),
-    habitPageEmpty: document.getElementById("habitPageEmpty"),
-    categoryFilter: document.getElementById("categoryFilter"),
-    searchHabit: document.getElementById("searchHabit"),
-
-    habitTotal: document.getElementById("habitTotal"),
-    habitDone: document.getElementById("habitDone"),
-    habitPending: document.getElementById("habitPending"),
-    heroProgress: document.getElementById("heroProgress")
+    habitPageForm: null,
+    habitEditId: null,
+    habitPageName: null,
+    habitPageCategory: null,
+    habitPageTarget: null,
+    habitPriority: null,
+    habitPageSubmit: null,
+    cancelEditBtn: null,
+    formTitle: null,
+    habitPageList: null,
+    habitPageEmpty: null,
+    categoryFilter: null,
+    searchHabit: null,
+    habitTotal: null,
+    habitDone: null,
+    habitPending: null,
+    heroProgress: null
 };
+
+function cacheHabitElements() {
+    habitPageElements.habitPageForm = document.getElementById("habitPageForm");
+    habitPageElements.habitEditId = document.getElementById("habitEditId");
+    habitPageElements.habitPageName = document.getElementById("habitPageName");
+    habitPageElements.habitPageCategory = document.getElementById("habitPageCategory");
+    habitPageElements.habitPageTarget = document.getElementById("habitPageTarget");
+    habitPageElements.habitPriority = document.getElementById("habitPriority");
+    habitPageElements.habitPageSubmit = document.getElementById("habitPageSubmit");
+    habitPageElements.cancelEditBtn = document.getElementById("cancelEditBtn");
+    habitPageElements.formTitle = document.getElementById("formTitle");
+    habitPageElements.habitPageList = document.getElementById("habitPageList");
+    habitPageElements.habitPageEmpty = document.getElementById("habitPageEmpty");
+    habitPageElements.categoryFilter = document.getElementById("categoryFilter");
+    habitPageElements.searchHabit = document.getElementById("searchHabit");
+    habitPageElements.habitTotal = document.getElementById("habitTotal");
+    habitPageElements.habitDone = document.getElementById("habitDone");
+    habitPageElements.habitPending = document.getElementById("habitPending");
+    habitPageElements.heroProgress = document.getElementById("heroProgress");
+}
 
 /* =========================
    INIT HABIT PAGE
@@ -288,6 +294,16 @@ function resetHabitPageForm() {
    INIT
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+    const isLoggedIn = await redirectIfNotLoggedIn();
+    if (!isLoggedIn) return;
+
+    if (isInitialized) return;
+    isInitialized = true;
+
+    habits = getHabits();
+    history = getHistory();
+
+    cacheHabitElements();
     initHabitPage();
 });

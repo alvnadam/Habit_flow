@@ -3,10 +3,17 @@
    Logika untuk halaman profile.html
 ========================================================= */
 
+let isInitialized = false;
+
 // Proteksi: Redirect jika belum login
-window.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const isLoggedIn = await redirectIfNotLoggedIn();
     if (!isLoggedIn) return;
+
+    if (isInitialized) return;
+    isInitialized = true;
+
+    initProfilePage();
 });
 
 /* =========================
@@ -14,9 +21,6 @@ window.addEventListener('DOMContentLoaded', async function() {
 ========================= */
 
 function initProfilePage() {
-    const profilePage = document.getElementById("profilePage");
-    if (!profilePage) return;
-
     loadProfileData();
 
     const profileForm = document.getElementById("profileForm");
@@ -131,6 +135,5 @@ function renderProfileStats() {
    INIT
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
-    initProfilePage();
-});
+
+

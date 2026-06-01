@@ -3,22 +3,18 @@
    Logika untuk halaman statistik.html
 ========================================================= */
 
+let isInitialized = false;
+
 // Proteksi: Redirect jika belum login
-window.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener("DOMContentLoaded", async function () {
     const isLoggedIn = await redirectIfNotLoggedIn();
     if (!isLoggedIn) return;
+
+    if (isInitialized) return;
+    isInitialized = true;
+
+    initStatistikPage();
 });
-
-/* =========================
-   INIT STATISTIK PAGE
-========================= */
-
-function initStatistikPage() {
-    const statistikContainer = document.getElementById("statistikPage");
-    if (!statistikContainer) return;
-
-    renderStatistik();
-}
 
 /* =========================
    RENDER STATISTIK
@@ -136,6 +132,7 @@ function renderCategoryBreakdown(habits, history) {
    INIT
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function () {
-    initStatistikPage();
-});
+function initStatistikPage() {
+    renderStatistik();
+}
+

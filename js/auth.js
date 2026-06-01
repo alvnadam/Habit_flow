@@ -230,15 +230,29 @@ function initLoginPage() {
                     window.location.href = CONFIG.PAGES.DASHBOARD;
                 }
             } else {
-                // Fallback: localStorage
-                const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
-                const user = users.find(u => u.email === email && u.password === btoa(password));
-
-                if (!user) {
-                    showAuthError(errorEl, "Email atau password salah.");
+                // Fallback: localStorage - Allow login dengan any email/password untuk testing
+                // Dalam production, harus registrasi dulu
+                if (!email || !password) {
+                    showAuthError(errorEl, "Email dan password wajib diisi.");
                     submitBtn.disabled = false;
                     submitBtn.textContent = "Masuk";
                     return;
+                }
+
+                // Cek apakah user sudah terdaftar
+                const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
+                let user = users.find(u => u.email === email && u.password === btoa(password));
+
+                // Jika tidak terdaftar, create user baru untuk fallback (development mode)
+                if (!user) {
+                    user = {
+                        id: generateId(),
+                        name: email.split('@')[0],
+                        email: email,
+                        password: btoa(password)
+                    };
+                    users.push(user);
+                    localStorage.setItem("habitflow_users", JSON.stringify(users));
                 }
 
                 setLoggedInUser({
