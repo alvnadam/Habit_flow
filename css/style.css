@@ -95,12 +95,15 @@ select {
     z-index: 100;
 
     max-width: 1200px;
+    width: min(100%, 1200px);
     margin: 0 auto;
     padding: 18px 24px;
 
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
 
     background: rgba(14, 14, 14, 0.92);
     backdrop-filter: blur(16px);
@@ -116,8 +119,9 @@ select {
 
 .desktop-menu {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 34px;
+    gap: 24px;
 }
 
 .desktop-menu a {
@@ -157,6 +161,7 @@ select {
 ========================= */
 
 .container {
+    width: min(100%, 1200px);
     max-width: 1200px;
     margin: 0 auto;
     padding: 32px 24px 90px;
@@ -166,6 +171,15 @@ select {
     display: grid;
     grid-template-columns: 8fr 4fr;
     gap: 36px;
+}
+
+.left-column,
+.right-column,
+.summary-grid,
+.habit-list,
+.habit-page-list,
+.profile-layout {
+    min-width: 0;
 }
 
 .left-column,
@@ -365,8 +379,13 @@ select {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: wrap;
 
     margin-bottom: 20px;
+}
+
+.section-header > * {
+    min-width: 0;
 }
 
 .section-header h2 {
@@ -536,11 +555,12 @@ select {
 
 .table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
     width: 100%;
-    min-width: 620px;
+    min-width: 100%;
     border-collapse: collapse;
 }
 
@@ -1209,8 +1229,13 @@ td {
         display: flex;
     }
 
+    .mobile-menu a {
+        min-width: 0;
+        flex: 1;
+    }
+
     .container {
-        padding: 24px 18px 110px;
+        padding: 24px 18px 130px;
     }
 
     .summary-grid {
