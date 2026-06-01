@@ -1,13 +1,31 @@
 /* =========================================================
    HABITFLOW - AUTH.JS
    Logika autentikasi: login, register, logout
+   Support: Supabase + LocalStorage fallback
 ========================================================= */
 
 /* =========================
    CEK STATUS LOGIN
 ========================= */
 
-function getLoggedInUser() {
+async function getLoggedInUser() {
+    // Cek Supabase dulu
+    if (isSupabaseReady() && supabaseClient) {
+        try {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                return {
+                    id: user.id,
+                    email: user.email,
+                    name: user.user_metadata?.name || user.email.split('@')[0]
+                };
+            }
+        } catch (error) {
+            console.warn("Supabase check failed:", error.message);
+        }
+    }
+    
+    // Fallback: localStorage
     return JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.USER)) || null;
 }
 
@@ -17,20 +35,29 @@ function setLoggedInUser(user) {
 
 function clearLoggedInUser() {
     localStorage.removeItem(CONFIG.STORAGE_KEYS.USER);
+    
+    // Logout dari Supabase juga
+    if (isSupabaseReady() && supabaseClient) {
+        supabaseClient.auth.signOut().catch(() => {});
+    }
 }
 
-function redirectIfNotLoggedIn() {
-    const user = getLoggedInUser();
+async function redirectIfNotLoggedIn() {
+    const user = await getLoggedInUser();
     if (!user) {
         window.location.href = CONFIG.PAGES.LOGIN;
+        return false;
     }
+    return true;
 }
 
-function redirectIfLoggedIn() {
-    const user = getLoggedInUser();
+async function redirectIfLoggedIn() {
+    const user = await getLoggedInUser();
     if (user) {
         window.location.href = CONFIG.PAGES.DASHBOARD;
+        return false;
     }
+    return true;
 }
 
 /* =========================
@@ -43,7 +70,7 @@ function initRegisterPage() {
 
     redirectIfLoggedIn();
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const name = document.getElementById("regName").value.trim();
@@ -53,12 +80,19 @@ function initRegisterPage() {
 
         const errorEl = document.getElementById("registerError");
         const successEl = document.getElementById("registerSuccess");
+        const submitBtn = document.getElementById("registerSubmitBtn");
 
         if (errorEl) errorEl.classList.remove("show");
         if (successEl) successEl.classList.remove("show");
 
+        // Validasi
         if (!name || !email || !password || !confirmPassword) {
             showAuthError(errorEl, "Semua field wajib diisi.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showAuthError(errorEl, "Format email tidak valid.");
             return;
         }
 
@@ -72,34 +106,74 @@ function initRegisterPage() {
             return;
         }
 
-        // Simpan user ke localStorage (simulasi tanpa backend)
-        const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
-        const existingUser = users.find(u => u.email === email);
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Membuat akun...";
 
-        if (existingUser) {
-            showAuthError(errorEl, "Email sudah terdaftar. Silakan login.");
-            return;
+        try {
+            // Register via Supabase
+            if (isSupabaseReady() && supabaseClient) {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: name
+                        }
+                    }
+                });
+
+                if (error) {
+                    showAuthError(errorEl, error.message || "Gagal membuat akun.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined">person_add</span> Buat Akun';
+                    return;
+                }
+
+                if (successEl) {
+                    successEl.innerHTML = "✅ Akun berhasil dibuat! Silakan cek email untuk verifikasi.";
+                    successEl.classList.add("show");
+                }
+
+                setTimeout(() => {
+                    window.location.href = CONFIG.PAGES.LOGIN;
+                }, 2000);
+            } else {
+                // Fallback: localStorage
+                const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
+                const existingUser = users.find(u => u.email === email);
+
+                if (existingUser) {
+                    showAuthError(errorEl, "Email sudah terdaftar. Silakan login.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined">person_add</span> Buat Akun';
+                    return;
+                }
+
+                const newUser = {
+                    id: generateId(),
+                    name: name,
+                    email: email,
+                    password: btoa(password),
+                    createdAt: new Date().toISOString()
+                };
+
+                users.push(newUser);
+                localStorage.setItem("habitflow_users", JSON.stringify(users));
+
+                if (successEl) {
+                    successEl.innerHTML = "✅ Akun berhasil dibuat! Mengarahkan ke login...";
+                    successEl.classList.add("show");
+                }
+
+                setTimeout(() => {
+                    window.location.href = CONFIG.PAGES.LOGIN;
+                }, 1800);
+            }
+        } catch (error) {
+            showAuthError(errorEl, "Terjadi kesalahan: " + error.message);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined">person_add</span> Buat Akun';
         }
-
-        const newUser = {
-            id: generateId(),
-            name: name,
-            email: email,
-            password: password, // Catatan: di produksi, password harus di-hash
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        localStorage.setItem("habitflow_users", JSON.stringify(users));
-
-        if (successEl) {
-            successEl.textContent = "Akun berhasil dibuat! Mengarahkan ke halaman login...";
-            successEl.classList.add("show");
-        }
-
-        setTimeout(() => {
-            window.location.href = CONFIG.PAGES.LOGIN;
-        }, 1800);
     });
 }
 
@@ -113,13 +187,15 @@ function initLoginPage() {
 
     redirectIfLoggedIn();
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const email = document.getElementById("loginEmail").value.trim();
         const password = document.getElementById("loginPassword").value;
 
         const errorEl = document.getElementById("loginError");
+        const submitBtn = document.getElementById("loginSubmitBtn");
+
         if (errorEl) errorEl.classList.remove("show");
 
         if (!email || !password) {
@@ -127,16 +203,56 @@ function initLoginPage() {
             return;
         }
 
-        const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
-        const user = users.find(u => u.email === email && u.password === password);
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Memproses...";
 
-        if (!user) {
-            showAuthError(errorEl, "Email atau password salah.");
-            return;
+        try {
+            // Login via Supabase
+            if (isSupabaseReady() && supabaseClient) {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showAuthError(errorEl, error.message || "Email atau password salah.");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Masuk";
+                    return;
+                }
+
+                if (data.user) {
+                    setLoggedInUser({
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.user_metadata?.name || email.split('@')[0]
+                    });
+                    window.location.href = CONFIG.PAGES.DASHBOARD;
+                }
+            } else {
+                // Fallback: localStorage
+                const users = JSON.parse(localStorage.getItem("habitflow_users")) || [];
+                const user = users.find(u => u.email === email && u.password === btoa(password));
+
+                if (!user) {
+                    showAuthError(errorEl, "Email atau password salah.");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Masuk";
+                    return;
+                }
+
+                setLoggedInUser({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                });
+                window.location.href = CONFIG.PAGES.DASHBOARD;
+            }
+        } catch (error) {
+            showAuthError(errorEl, "Terjadi kesalahan: " + error.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Masuk";
         }
-
-        setLoggedInUser({ id: user.id, name: user.name, email: user.email });
-        window.location.href = CONFIG.PAGES.DASHBOARD;
     });
 }
 
@@ -144,7 +260,11 @@ function initLoginPage() {
    LOGOUT
 ========================= */
 
-function logout() {
+async function logout() {
+    if (isSupabaseReady() && supabaseClient) {
+        await supabaseClient.auth.signOut();
+    }
+    
     clearLoggedInUser();
     window.location.href = CONFIG.PAGES.LOGIN;
 }
@@ -165,10 +285,10 @@ function togglePasswordVisibility(inputId, btnEl) {
 
     if (input.type === "password") {
         input.type = "text";
-        btnEl.textContent = "visibility_off";
+        btnEl.innerHTML = '<span class="material-symbols-outlined">visibility_off</span>';
     } else {
         input.type = "password";
-        btnEl.textContent = "visibility";
+        btnEl.innerHTML = '<span class="material-symbols-outlined">visibility</span>';
     }
 }
 

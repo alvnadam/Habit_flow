@@ -3,6 +3,12 @@
    Logika untuk halaman habit.html / Habit Manager
 ========================================================= */
 
+// Proteksi: Redirect jika belum login
+window.addEventListener('DOMContentLoaded', async function() {
+    const isLoggedIn = await redirectIfNotLoggedIn();
+    if (!isLoggedIn) return;
+});
+
 let habits = getHabits();
 let history = getHistory();
 

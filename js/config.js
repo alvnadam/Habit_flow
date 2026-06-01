@@ -1,10 +1,17 @@
 /* =========================================================
    HABITFLOW - CONFIG.JS
    Konfigurasi global aplikasi
+   
+   ⚠️ SETUP SUPABASE:
+   1. Baca file SETUP_SUPABASE.md untuk instruksi lengkap
+   2. Buat project di https://supabase.com
+   3. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di bawah
+   4. Jalankan SQL dari SETUP_SUPABASE.md di Supabase console
 ========================================================= */
 
 const CONFIG = {
-    // Supabase credentials (isi sesuai project kamu)
+    // 🔑 SUPABASE CREDENTIALS - ISI DENGAN DATA PROJECT KAMU
+    // Dapatkan dari: Supabase Console → Settings → API
     SUPABASE_URL: "https://YOUR_PROJECT_ID.supabase.co",
     SUPABASE_ANON_KEY: "YOUR_ANON_KEY_HERE",
 

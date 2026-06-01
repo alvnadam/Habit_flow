@@ -3,6 +3,12 @@
    Logika untuk halaman index.html / Dashboard
 ========================================================= */
 
+// Proteksi: Redirect jika belum login
+window.addEventListener('DOMContentLoaded', async function() {
+    const isLoggedIn = await redirectIfNotLoggedIn();
+    if (!isLoggedIn) return;
+});
+
 let habits = getHabits();
 let history = getHistory();
 

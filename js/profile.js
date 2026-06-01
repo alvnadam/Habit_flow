@@ -3,6 +3,12 @@
    Logika untuk halaman profile.html
 ========================================================= */
 
+// Proteksi: Redirect jika belum login
+window.addEventListener('DOMContentLoaded', async function() {
+    const isLoggedIn = await redirectIfNotLoggedIn();
+    if (!isLoggedIn) return;
+});
+
 /* =========================
    INIT PROFILE PAGE
 ========================= */
