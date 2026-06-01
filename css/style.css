@@ -68,8 +68,16 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
     font-family: inherit;
+    min-width: 0;
+}
+
+img,
+svg {
+    max-width: 100%;
+    height: auto;
 }
 
 button {
@@ -178,7 +186,16 @@ select {
 .summary-grid,
 .habit-list,
 .habit-page-list,
-.profile-layout {
+.profile-layout,
+.statistik-layout,
+.statistik-summary,
+.riwayat-filters,
+.search-wrapper,
+.section-header,
+.habit-page-hero,
+.hero-mini-card,
+.chart-box,
+.footer-links {
     min-width: 0;
 }
 
@@ -562,6 +579,13 @@ table {
     width: 100%;
     min-width: 100%;
     border-collapse: collapse;
+}
+
+table th,
+table td {
+    min-width: 0;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 th {
@@ -1200,7 +1224,7 @@ td {
     }
 
     .habit-page-hero {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
     .habit-page-summary {
@@ -1213,6 +1237,14 @@ td {
 
     .habit-create-card {
         position: static;
+    }
+
+    .statistik-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-header {
+        gap: 16px;
     }
 }
 
@@ -1263,6 +1295,27 @@ td {
         flex-direction: column;
     }
 
+    .riwayat-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .riwayat-filters .filter-select,
+    .riwayat-filters .search-wrapper,
+    .riwayat-filters button {
+        width: 100%;
+    }
+
+    .riwayat-page-table th:nth-child(3),
+    .riwayat-page-table td:nth-child(3) {
+        display: none;
+    }
+
+    .riwayat-page-table th,
+    .riwayat-page-table td {
+        padding: 12px 8px;
+    }
+
     .filter-select {
         max-width: 100%;
     }
@@ -1303,8 +1356,21 @@ td {
         padding: 16px 18px;
     }
 
-    .logo {
-        font-size: 22px;
+    .hero-mini-card {
+        padding: 20px;
+    }
+
+    .tips-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-badge {
+        padding: 6px 12px;
+    }
+
+    .mobile-menu a small {
+        display: none;
     }
 
     .summary-grid {
@@ -1338,5 +1404,9 @@ td {
 
     .habit-page-title {
         font-size: 19px;
+    }
+
+    .logo {
+        font-size: 22px;
     }
 }
