@@ -707,12 +707,14 @@ td {
     align-items: end;
     justify-content: space-between;
     gap: 10px;
+    flex-wrap: wrap;
 
     height: 150px;
 }
 
 .bar-item {
     flex: 1;
+    min-width: 28px;
 
     height: 100%;
 
@@ -721,6 +723,76 @@ td {
     justify-content: end;
     flex-direction: column;
     gap: 8px;
+}
+
+/* =========================
+   STATISTIK PAGE
+========================= */
+
+.statistik-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+.statistik-column,
+.statistik-layout > div {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.statistik-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.statistik-summary .summary-card {
+    min-height: 120px;
+}
+
+.category-bar-row {
+    margin-bottom: 14px;
+}
+
+.category-bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.category-bar-label span {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.category-bar-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--surface-highest);
+    overflow: hidden;
+}
+
+.category-bar-fill {
+    width: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--primary);
+    transition: width 0.8s ease;
+}
+
+.statistic-card {
+    width: 100%;
+}
+
+.chart-box {
+    width: 100%;
 }
 
 .bar {
@@ -1237,6 +1309,10 @@ td {
 
     .habit-create-card {
         position: static;
+    }
+
+    .statistik-layout {
+        grid-template-columns: 1fr;
     }
 
     .statistik-summary {
